@@ -6,7 +6,7 @@
 /*   By: bigungor <bigungor@student.42istanbul.com.t+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 22:26:40 by bigungor          #+#    #+#             */
-/*   Updated: 2026/03/14 02:08:24 by bigungor         ###   ########.fr       */
+/*   Updated: 2026/03/17 02:26:31 by bigungor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,41 @@ int	ft_format(char c, va_list args)
 		return (ft_print_hex(va_arg(args, unsigned int), c));
 	if (c == '%')
 		return (write(1, "%", 1));
-	return (0);
+	return (-1);
+}
+
+static int	control(const char *format, int *i, va_list args)
+{
+	int	len;
+
+	len = ft_format(format[*i + 1], args);
+	if (len == -1)
+		return (-1);
+	(*i)++;
+	return (len);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	int		i;
 	int		len;
+	int		tmp;
 	va_list	args;
 
 	i = 0;
 	len = 0;
-	if(!format)
-		return(-1);
+	if (!format)
+		return (-1);
 	va_start(args, format);
 	while (format[i])
 	{
 		if (format[i] == '%' && format[i + 1])
-		{
-			len += ft_format(format[i + 1], args);
-			i++;
-		}
+			tmp = handle_format(format, &i, args);
 		else
-			len += write(1, &format[i], 1);
+			tmp = write(1, &format[i], 1);
+		if (tmp == -1)
+			return (-1);
+		len += tmp;
 		i++;
 	}
 	va_end(args);

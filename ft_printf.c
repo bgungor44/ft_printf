@@ -6,7 +6,7 @@
 /*   By: bigungor <bigungor@student.42istanbul.com.t+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 22:26:40 by bigungor          #+#    #+#             */
-/*   Updated: 2026/03/17 02:26:31 by bigungor         ###   ########.fr       */
+/*   Updated: 2026/03/17 02:28:32 by bigungor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_printf(const char *format, ...)
 	while (format[i])
 	{
 		if (format[i] == '%' && format[i + 1])
-			tmp = handle_format(format, &i, args);
+			tmp = control(format, &i, args);
 		else
 			tmp = write(1, &format[i], 1);
 		if (tmp == -1)
